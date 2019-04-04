@@ -1,0 +1,20 @@
+type User {
+  id: ID! @unique 
+  name: String!
+  email: String! @unique 
+  posts: [Post!]!
+  hobbies: [Hobby!]!
+}
+
+type Post {
+  id: ID! @unique
+  createdAt: DateTime!
+  postText: String!
+  postedBy: User
+}
+
+type Hobby {
+  id: ID! @unique 
+  activity: String!
+  user: User!
+}

@@ -1,0 +1,43 @@
+# Query, Mutation and Subscription are two of the 3 root types (Subscription) of the graphql schema 
+# Query and Mutation fields are the entry point to the GraphQL API
+# Query type is for all operations analogous to a get request. Query is for fetching data
+type Query {
+  getUsers: [User!]!
+  getUser(id: ID!, hobbyLim: Int, postLim: Int): User
+  hobby(id: ID!): Hobby
+}
+
+# Any operation from the client that will change a resource on the server will be a Mutation type
+type Mutation {
+  post(userId: ID!, postText: String!): Post!
+  createUser(email: String!, name: String!): User!
+  createHobby(userId: ID!, activity: String!): Hobby!
+}
+
+# Type User and Post here are developer defined GraphQL Object types
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  posts: [Post!]!
+  hobbies: [Hobby!]!
+}
+
+# id, postText and postedBy are the only fields that can appear / be queried for on the Post type
+type Post {
+    id: ID!
+    postText: String!
+    postedBy: User
+}
+
+# ID and String are Scalar data types. Scalar objects resolve a field and can't return subfields
+# user: User! means this field will return a User object type that cannot be null (!)
+# hobbies: [Hobby!]! means that hobbies will return a list of Hobby objects. []! promises that the list will not be null but can be Empty.
+type Hobby {
+  id: ID!
+  activity: String!
+  user: User!
+}
+
+# Each field in the above schema is backed by a resolver function
+# If the field produces a Scalar value, then the execution is finished. Else it returns the next Type and continues to resolve.
